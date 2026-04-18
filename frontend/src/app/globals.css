@@ -1,0 +1,217 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--on-surface);
+  
+  /* Font Families */
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-manrope);
+
+  /* All exact generated colors from Stitch UI */
+  --color-on-tertiary-fixed: var(--on-tertiary-fixed);
+  --color-primary: var(--primary);
+  --color-tertiary-fixed: var(--tertiary-fixed);
+  --color-on-secondary-container: var(--on-secondary-container);
+  --color-on-secondary-fixed: var(--on-secondary-fixed);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-on-primary-container: var(--on-primary-container);
+  --color-on-error-container: var(--on-error-container);
+  --color-inverse-primary: var(--inverse-primary);
+  --color-on-tertiary-container: var(--on-tertiary-container);
+  --color-on-secondary-fixed-variant: var(--on-secondary-fixed-variant);
+  --color-primary-fixed-dim: var(--primary-fixed-dim);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-bright: var(--surface-bright);
+  --color-on-background: var(--on-background);
+  --color-secondary-fixed: var(--secondary-fixed);
+  --color-error-container: var(--error-container);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-primary-container: var(--primary-container);
+  --color-on-error: var(--on-error);
+  --color-secondary-fixed-dim: var(--secondary-fixed-dim);
+  --color-error: var(--error);
+  --color-inverse-surface: var(--inverse-surface);
+  --color-surface-container-highest: var(--surface-container-highest);
+  --color-on-tertiary-fixed-variant: var(--on-tertiary-fixed-variant);
+  --color-on-tertiary: var(--on-tertiary);
+  --color-surface-container: var(--surface-container);
+  --color-tertiary-fixed-dim: var(--tertiary-fixed-dim);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface: var(--surface);
+  --color-on-primary-fixed-variant: var(--on-primary-fixed-variant);
+  --color-on-secondary: var(--on-secondary);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-inverse-on-surface: var(--inverse-on-surface);
+  --color-tertiary: var(--tertiary);
+  --color-on-primary-fixed: var(--on-primary-fixed);
+  --color-surface-tint: var(--surface-tint);
+  --color-on-surface: var(--on-surface);
+  --color-on-primary: var(--on-primary);
+  --color-secondary-container: var(--secondary-container);
+  --color-primary-fixed: var(--primary-fixed);
+  --color-secondary: var(--secondary);
+  --color-surface-variant: var(--surface-variant);
+  --color-on-surface-variant: var(--on-surface-variant);
+
+  --color-muted: var(--surface-container-low);
+  --color-muted-foreground: var(--outline);
+
+  --color-card: var(--surface-container-lowest);
+  --color-card-foreground: var(--on-surface);
+
+  --color-popover: var(--surface-container-lowest);
+  --color-popover-foreground: var(--on-surface);
+
+  --color-border: transparent;
+  --color-input: var(--surface-container-low);
+  --color-ring: var(--primary);
+
+  /* Radius mapping based on design system request */
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: 2rem;
+  --radius-xl: 3rem;
+}
+
+:root {
+  /* Stitch Base Variables */
+  --on-tertiary-fixed: #301400;
+  --primary: #4F39F6;
+  --tertiary-fixed: #ffdcc5;
+  --on-secondary-container: #fffbff;
+  --on-secondary-fixed: #2c0051;
+  --outline: #767586;
+  --outline-variant: #c7c4d7;
+  --on-primary-container: #fffbff;
+  --on-error-container: #93000a;
+  --inverse-primary: #c0c1ff;
+  --on-tertiary-container: #fffbff;
+  --on-secondary-fixed-variant: #6900b3;
+  --primary-fixed-dim: #c0c1ff;
+  --surface-container-low: #f3f3f3;
+  --surface-bright: #f9f9f9;
+  --on-background: #1b1b1b;
+  --secondary-fixed: #f0dbff;
+  --error-container: #ffdad6;
+  --surface-container-lowest: #ffffff;
+  --primary-container: #6063ee;
+  --on-error: #ffffff;
+  --secondary-fixed-dim: #ddb7ff;
+  --error: #ba1a1a;
+  --inverse-surface: #303030;
+  --surface-container-highest: #e2e2e2;
+  --on-tertiary-fixed-variant: #703700;
+  --on-tertiary: #ffffff;
+  --surface-container: #eeeeee;
+  --tertiary-fixed-dim: #ffb783;
+  --surface-dim: #dadada;
+  --surface: #eeeeee;
+  --on-primary-fixed-variant: #2f2ebe;
+  --on-secondary: #ffffff;
+  --surface-container-high: #e8e8e8;
+  --tertiary-container: #b55d00;
+  --inverse-on-surface: #f1f1f1;
+  --tertiary: #904900;
+  --on-primary-fixed: #07006c;
+  --surface-tint: #494bd6;
+  --on-surface: #1b1b1b;
+  --on-primary: #ffffff;
+  --secondary-container: #9c48ea;
+  --primary-fixed: #e1e0ff;
+  --secondary: #8127cf;
+  --background: #f9f9f9;
+  --surface-variant: #e2e2e2;
+  --on-surface-variant: #464554;
+  
+  --radius: 0.5rem;
+}
+
+.dark {
+  /* Simple dark mode fallback using standard inversions for surface while keeping primary */
+  --background: #111111;
+  --surface: #111111;
+  --on-surface: #f1f1f1;
+  --on-surface-variant: #b0b0b0;
+  --surface-container-lowest: #1a1a1a;
+  --surface-container-low: #222222;
+  --surface-container: #2a2a2a;
+  --surface-container-high: #333333;
+  --surface-container-highest: #3e3e3e;
+  --surface-bright: #2d2d2d;
+  --surface-variant: #3e3e3e;
+  --inverse-surface: #eeeeee;
+  --inverse-on-surface: #111111;
+
+  --primary: #4F39F6;
+  --primary-container: #4648d4;
+  --on-primary: #07006c;
+  
+  --secondary: #ddb7ff;
+  --secondary-container: #8127cf;
+  --on-secondary: #2c0051;
+  
+  --outline: #938f99;
+  --outline-variant: #49454f;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold;
+  }
+}
+
+/* Base button primary gradient */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+}
+
+.custom-shadow {
+  box-shadow: 0 0 40px 0 rgba(27, 27, 27, 0.04);
+}
+
+.ghost-border {
+  border: 1px solid rgba(199, 196, 215, 0.15); /* outline-variant 15% */
+}
+
+/* Micro-animations and custom effects requested in Design HTML snippets */
+.tonal-transition {
+    background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(249,249,249,1));
+}
+.glass-header {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+.glass-nav {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+}
+.ambient-glow {
+    box-shadow: 0 40px 40px rgba(27, 27, 27, 0.04);
+}
+.ambient-shadow {
+    box-shadow: 0 40px 40px -20px rgba(27, 27, 27, 0.04);
+}
+.custom-scrollbar::-webkit-scrollbar, .chat-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track, .chat-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb, .chat-scroll::-webkit-scrollbar-thumb {
+    background:  #4F39F6;
+;
+    border-radius: 10px;
+}
