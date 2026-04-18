@@ -1,0 +1,158 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id               String            @id @default(uuid())
+  clerkId          String            @unique
+  name             String
+  bio              String?
+  avatarUrl        String?
+  isOnboarded      Boolean           @default(false)
+  availability     Availability      @default(BOTH)
+  location         String?
+  rating           Float             @default(0.0)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  skillsOffered    UserSkillOffered[]
+  skillsWanted     UserSkillWanted[]
+
+  requestsSent     ExchangeRequest[] @relation("SentRequests")
+  requestsReceived ExchangeRequest[] @relation("ReceivedRequests")
+
+  chatMemberships  ChatMember[]
+  messages         Message[]
+
+  reviewsGiven     Review[]          @relation("Reviewer")
+  reviewsReceived  Review[]          @relation("Reviewee")
+
+  bookmarks        Bookmark[]        @relation("UserBookmarks")
+  bookmarkedBy     Bookmark[]        @relation("TargetBookmarks")
+
+  notifications    Notification[]
+}
+
+enum Availability {
+  ONLINE
+  OFFLINE
+  BOTH
+}
+
+model Skill {
+  id            String             @id @default(uuid())
+  name          String             @unique
+  category      String?
+  icon          String?
+  
+  usersOffering UserSkillOffered[]
+  usersWanting  UserSkillWanted[]
+}
+
+model UserSkillOffered {
+  id      String @id @default(uuid())
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  skill   Skill  @relation(fields: [skillId], references: [id])
+  skillId String
+  
+  yearsOfExperience Int?
+}
+
+model UserSkillWanted {
+  id      String @id @default(uuid())
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  skill   Skill  @relation(fields: [skillId], references: [id])
+  skillId String
+}
+
+model ExchangeRequest {
+  id         String        @id @default(uuid())
+  sender     User          @relation("SentRequests", fields: [senderId], references: [id])
+  senderId   String
+  receiver   User          @relation("ReceivedRequests", fields: [receiverId], references: [id])
+  receiverId String
+  status     RequestStatus @default(PENDING)
+  message    String?       // Initial message
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COMPLETED
+}
+
+model Chat {
+  id        String       @id @default(uuid())
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  members   ChatMember[]
+  messages  Message[]
+}
+
+model ChatMember {
+  id     String @id @default(uuid())
+  chat   Chat   @relation(fields: [chatId], references: [id])
+  chatId String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    String
+  sender    User     @relation(fields: [senderId], references: [id])
+  senderId  String
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  reviewer   User     @relation("Reviewer", fields: [reviewerId], references: [id])
+  reviewerId String
+  reviewee   User     @relation("Reviewee", fields: [revieweeId], references: [id])
+  revieweeId String
+  rating     Int
+  text       String?
+  createdAt  DateTime @default(now())
+
+  @@unique([reviewerId, revieweeId])
+}
+
+model Bookmark {
+  id           String   @id @default(uuid())
+  user         User     @relation("UserBookmarks", fields: [userId], references: [id])
+  userId       String
+  targetUser   User     @relation("TargetBookmarks", fields: [targetUserId], references: [id])
+  targetUserId String
+  createdAt    DateTime @default(now())
+
+  @@unique([userId, targetUserId])
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  user      User             @relation(fields: [userId], references: [id])
+  userId    String
+  type      NotificationType
+  message   String
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+}
+
+enum NotificationType {
+  NEW_REQUEST
+  REQUEST_ACCEPTED
+  REQUEST_REJECTED
+  NEW_MESSAGE
+}
