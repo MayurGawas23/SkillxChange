@@ -1,7 +1,5 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import http from 'http'
-import { neon } from '@neondatabase/serverless';
 import express from 'express';
 import cors from 'cors';
 import { createServer } from 'http';
@@ -15,21 +13,6 @@ import chatRoutes from '../src/routes/chat.route.js'
 import requestRoutes from '../src/routes/requests.route.js'
 import { seedSkills } from './lib/seedSkills.js';
 import { initSocket } from './lib/socket.io.js';
-
-
-const sql = neon(process.env.DATABASE_URL);
-
-const requestHandler = async (req, res) => {
-  const result = await sql`SELECT version()`;
-  const { version } = result[0];
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end(version);
-};
-
-http.createServer(requestHandler).listen(4000, () => {
-  console.log("Server running at http://localhost:4000");
-});
-
 
 // Prisma Client Initialization with adapter
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
