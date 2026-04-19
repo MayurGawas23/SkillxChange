@@ -19,7 +19,7 @@ async function syncUserWithDatabase() {
   const user = await currentUser();
   if (!user) return null;
 
-  const res = await fetch("http://localhost:4000/api/users/sync", {
+  const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/users/sync", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -39,7 +39,7 @@ async function getExploreUsers(searchParams: any) {
   if (searchParams.learnSkill) params.append("learnSkill", searchParams.learnSkill);
   if (searchParams.availability) params.append("availability", searchParams.availability);
 
-  const res = await fetch(`http://localhost:4000/api/users?${params.toString()}`, { cache: 'no-store' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users?${params.toString()}`, { cache: 'no-store' });
   if (!res.ok) return [];
   return res.json();
 }
@@ -53,7 +53,7 @@ export default async function ExplorePage({ searchParams }: { searchParams: Prom
 
   let userRequests: any[] = [];
   if (clerkUser) {
-    const reqsRes = await fetch(`http://localhost:4000/api/requests/${clerkUser.id}`, { cache: 'no-store' });
+    const reqsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/requests/${clerkUser.id}`, { cache: 'no-store' });
     if (reqsRes.ok) userRequests = await reqsRes.json();
   }
 

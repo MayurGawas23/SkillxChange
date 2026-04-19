@@ -20,7 +20,7 @@ export default function ProfileSkillsEditor({ clerkId, isOwner, initialTeachSkil
 
   useEffect(() => {
     if (isEditing && availableSkills.length === 0) {
-      fetch("http://localhost:4000/api/skills")
+      fetch("${process.env.NEXT_PUBLIC_API_URL}/api/skills")
         .then(res => res.json())
         .then(data => setAvailableSkills(data))
         .catch(err => console.error(err));
@@ -30,7 +30,7 @@ export default function ProfileSkillsEditor({ clerkId, isOwner, initialTeachSkil
   const handleSave = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:4000/api/users/${clerkId}/skills`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${clerkId}/skills`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

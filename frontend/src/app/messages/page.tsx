@@ -35,7 +35,7 @@ export default function MessagesPage() {
   // Fetch chats on initial load
   useEffect(() => {
     if (!user) return;
-    fetch(`http://localhost:4000/api/chats/${user.id}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chats/${user.id}`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -54,7 +54,7 @@ export default function MessagesPage() {
     setChatMessages([]); // clear current
     
     // Fetch active chat messages
-    fetch(`http://localhost:4000/api/chats/${activeChatId}/messages`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chats/${activeChatId}/messages`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setChatMessages(data);
@@ -63,7 +63,7 @@ export default function MessagesPage() {
       .catch(err => console.error("Error fetching messages:", err));
 
     // Connect socket
-    socketRef.current = io("http://localhost:4000");
+    socketRef.current = io("${process.env.NEXT_PUBLIC_API_URL}");
     socketRef.current.emit("join_chat", activeChatId);
 
     // Listen for new messages

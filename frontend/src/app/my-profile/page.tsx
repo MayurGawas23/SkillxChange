@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 export const revalidate = 0;
 
 async function syncAndGetUser(user: any) {
-  const res = await fetch("http://localhost:4000/api/users/sync", {
+  const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/users/sync", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -24,7 +24,7 @@ async function syncAndGetUser(user: any) {
 }
 
 async function getAllSkills() {
-  const res = await fetch("http://localhost:4000/api/skills", { cache: 'no-store' });
+  const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/skills", { cache: 'no-store' });
   if (!res.ok) return [];
   return res.json();
 }

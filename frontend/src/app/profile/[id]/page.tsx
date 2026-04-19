@@ -8,7 +8,7 @@ import NavBar from "@/components/NavBar";
 
 async function getProfileAndState(profileId: string, activeClerkId?: string) {
   // Fetch user profile
-  const usersRes = await fetch(`http://localhost:4000/api/users`, { cache: 'no-store' });
+  const usersRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users`, { cache: 'no-store' });
   if (!usersRes.ok) return { user: null };
   const users = await usersRes.json();
   const user = users.find((u: any) => u.id === profileId);
@@ -16,7 +16,7 @@ async function getProfileAndState(profileId: string, activeClerkId?: string) {
   if (!user) return { user: null };
 
   // Fetch all skills
-  const skillsRes = await fetch("http://localhost:4000/api/skills", { cache: 'no-store' });
+  const skillsRes = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/skills", { cache: 'no-store' });
   const allSkills = skillsRes.ok ? await skillsRes.json() : [];
 
   let existingRequestStatus = null;
@@ -24,7 +24,7 @@ async function getProfileAndState(profileId: string, activeClerkId?: string) {
 
   if (activeClerkId) {
     // We need to fetch active clark's database ID or just use their requests endpoint
-    const requestsRes = await fetch(`http://localhost:4000/api/requests/${activeClerkId}`, { cache: 'no-store' });
+    const requestsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/requests/${activeClerkId}`, { cache: 'no-store' });
     if (requestsRes.ok) {
       const requests = await requestsRes.json();
       // Check if there is an existing interaction between the users

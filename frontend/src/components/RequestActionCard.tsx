@@ -15,7 +15,7 @@ export default function RequestActionCard({ reqItem, currentUserId }: { reqItem:
   const handleAction = async (status: "ACCEPTED" | "REJECTED") => {
     setLoading(true);
     try {
-      await fetch(`http://localhost:4000/api/requests/${reqItem.id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/requests/${reqItem.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status })

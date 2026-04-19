@@ -18,7 +18,7 @@ export default function OnboardingPage() {
   const [learnSkills, setLearnSkills] = useState<Skill[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/skills")
+    fetch("${process.env.NEXT_PUBLIC_API_URL}/api/skills")
       .then(res => res.json())
       .then(data => setAvailableSkills(data))
       .catch(err => console.error("Failed to load skills", err));
@@ -30,7 +30,7 @@ export default function OnboardingPage() {
 
     // Call a backend endpoint to finalize onboarding
     try {
-      const res = await fetch("http://localhost:4000/api/users/onboard", {
+      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/users/onboard", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

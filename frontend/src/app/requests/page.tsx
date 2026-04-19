@@ -11,7 +11,7 @@ import { Wallet } from "lucide-react";
 export const revalidate = 0;
 
 async function getRequests(clerkId: string) {
-  const res = await fetch(`http://localhost:4000/api/requests/${clerkId}`, { cache: 'no-store' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/requests/${clerkId}`, { cache: 'no-store' });
   if (!res.ok) return [];
   return res.json();
 }
