@@ -7,7 +7,7 @@ import { Server } from 'socket.io';
 import { PrismaClient } from '@prisma/client';
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { seedDummyUsers } from "../prisma/add-dummies.js";
+import { seedDummyUsers } from "./lib/add-dummies.js";
 import userRoutes from '../src/routes/user.route.js'
 import skillRoutes from '../src/routes/skills.route.js'
 import chatRoutes from '../src/routes/chat.route.js'
