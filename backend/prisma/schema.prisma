@@ -61,6 +61,8 @@ model UserSkillOffered {
   skillId String
   
   yearsOfExperience Int?
+
+  @@unique([userId, skillId]) 
 }
 
 model UserSkillWanted {
@@ -69,6 +71,8 @@ model UserSkillWanted {
   userId  String
   skill   Skill  @relation(fields: [skillId], references: [id])
   skillId String
+  
+  @@unique([userId, skillId]) 
 }
 
 model ExchangeRequest {

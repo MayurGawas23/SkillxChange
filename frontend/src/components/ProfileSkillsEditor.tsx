@@ -20,7 +20,7 @@ export default function ProfileSkillsEditor({ clerkId, isOwner, initialTeachSkil
 
   useEffect(() => {
     if (isEditing && availableSkills.length === 0) {
-      fetch("${process.env.NEXT_PUBLIC_API_URL}/api/skills")
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skills`)
         .then(res => res.json())
         .then(data => setAvailableSkills(data))
         .catch(err => console.error(err));

@@ -49,7 +49,7 @@ export default function SkillSelector({ label, availableSkills, selectedSkills, 
     e.preventDefault();
     if (!query.trim() || selectedSkills.length >= maxLimit) return;
     try {
-      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/skills", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skills`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ name: query.trim() })

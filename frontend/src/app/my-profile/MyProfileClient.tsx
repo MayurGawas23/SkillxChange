@@ -25,7 +25,7 @@ export default function MyProfileClient({ user, allSkills }: { user: any, allSki
       // onboard route patches user info AND skills based on our backend index.ts layout
       // Let's check backend index.ts for PUT /api/users/onboard or update.
       // wait, `app.post('/api/users/onboard')` exists!
-      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/users/onboard", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/onboard`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

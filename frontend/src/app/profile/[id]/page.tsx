@@ -16,7 +16,7 @@ async function getProfileAndState(profileId: string, activeClerkId?: string) {
   if (!user) return { user: null };
 
   // Fetch all skills
-  const skillsRes = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/skills", { cache: 'no-store' });
+  const skillsRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/skills`, { cache: 'no-store' });
   const allSkills = skillsRes.ok ? await skillsRes.json() : [];
 
   let existingRequestStatus = null;

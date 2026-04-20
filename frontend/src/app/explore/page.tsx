@@ -19,7 +19,7 @@ async function syncUserWithDatabase() {
   const user = await currentUser();
   if (!user) return null;
 
-  const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/users/sync", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/sync`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

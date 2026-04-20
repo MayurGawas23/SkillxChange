@@ -63,7 +63,7 @@ export default function MessagesPage() {
       .catch(err => console.error("Error fetching messages:", err));
 
     // Connect socket
-    socketRef.current = io("${process.env.NEXT_PUBLIC_API_URL}");
+    socketRef.current = io(`${process.env.NEXT_PUBLIC_API_URL}`);
     socketRef.current.emit("join_chat", activeChatId);
 
     // Listen for new messages

@@ -19,7 +19,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
     const verifyUser = async () => {
       try {
-        const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/users/sync", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/sync`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

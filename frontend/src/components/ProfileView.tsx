@@ -36,7 +36,7 @@ export default function ProfileView({ user, allSkills, isOwnProfile, existingReq
   const handleSave = async () => {
     setSaving(true);
     try {
-      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/users/onboard", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/onboard`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -66,7 +66,7 @@ export default function ProfileView({ user, allSkills, isOwnProfile, existingReq
     if (!clerkUser) return router.push("/sign-in");
     setRequestSending(true);
     try {
-      const res = await fetch("${process.env.NEXT_PUBLIC_API_URL}/api/requests", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/requests`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

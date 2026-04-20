@@ -7,6 +7,7 @@ import { Server } from 'socket.io';
 import { PrismaClient } from '@prisma/client';
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
+import { seedDummyUsers } from "../prisma/add-dummies.js";
 import userRoutes from '../src/routes/user.route.js'
 import skillRoutes from '../src/routes/skills.route.js'
 import chatRoutes from '../src/routes/chat.route.js'
@@ -394,6 +395,21 @@ initSocket(io, prisma);
   //     res.status(500).json({ error: 'Failed to update request' });
   //   }
   // });
+  async function startServer() {
+  try {
+    // ✅ Seed dummy users first
+    await seedDummyUsers();
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+
+  } catch (err) {
+    console.error("❌ Server startup failed:", err);
+  }
+}
+
+startServer();
   
   
   const PORT = process.env.PORT || 4000;
