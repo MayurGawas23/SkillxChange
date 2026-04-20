@@ -7,28 +7,56 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
+const isProd = process.env.NODE_ENV === "production";
+
 async function main() {
-  console.log('Clearing old data...');
-  await prisma.message.deleteMany();
-  await prisma.chatMember.deleteMany();
-  await prisma.chat.deleteMany();
-  await prisma.notification.deleteMany();
-  await prisma.bookmark.deleteMany();
-  await prisma.review.deleteMany();
-  await prisma.exchangeRequest.deleteMany();
-  await prisma.userSkillWanted.deleteMany();
-  await prisma.userSkillOffered.deleteMany();
-  await prisma.skill.deleteMany();
-  await prisma.user.deleteMany();
+  console.log(`🌱 Seeding started in ${isProd ? "PRODUCTION" : "DEV"} mode`);
 
-  console.log('Seeding skills...');
-  const react = await prisma.skill.create({ data: { name: 'React', category: 'Development', icon: 'Atom' } });
-  const node = await prisma.skill.create({ data: { name: 'Node.js', category: 'Development', icon: 'Server' } });
-  const ui = await prisma.skill.create({ data: { name: 'UI/UX Design', category: 'Design', icon: 'PenTool' } });
-  const guitar = await prisma.skill.create({ data: { name: 'Guitar', category: 'Music', icon: 'Music' } });
+  // 🔥 DEV ONLY: Clear database
+  if (!isProd) {
+    console.log('🧹 Clearing old data (DEV only)...');
 
-  console.log('Seeding dummy users...');
-  
+    await prisma.message.deleteMany();
+    await prisma.chatMember.deleteMany();
+    await prisma.chat.deleteMany();
+    await prisma.notification.deleteMany();
+    await prisma.bookmark.deleteMany();
+    await prisma.review.deleteMany();
+    await prisma.exchangeRequest.deleteMany();
+    await prisma.userSkillWanted.deleteMany();
+    await prisma.userSkillOffered.deleteMany();
+    await prisma.skill.deleteMany();
+    await prisma.user.deleteMany();
+  }
+
+  console.log('⚡ Seeding skills...');
+
+  const react = await prisma.skill.upsert({
+    where: { name: 'React' },
+    update: {},
+    create: { name: 'React', category: 'Development', icon: 'Atom' }
+  });
+
+  const node = await prisma.skill.upsert({
+    where: { name: 'Node.js' },
+    update: {},
+    create: { name: 'Node.js', category: 'Development', icon: 'Server' }
+  });
+
+  const ui = await prisma.skill.upsert({
+    where: { name: 'UI/UX Design' },
+    update: {},
+    create: { name: 'UI/UX Design', category: 'Design', icon: 'PenTool' }
+  });
+
+  const guitar = await prisma.skill.upsert({
+    where: { name: 'Guitar' },
+    update: {},
+    create: { name: 'Guitar', category: 'Music', icon: 'Music' }
+  });
+
+  console.log('👤 Seeding users...');
+
   const dummyUsersData = [
     {
       clerkId: 'user_dummy1',
@@ -57,38 +85,79 @@ async function main() {
   ];
 
   for (const data of dummyUsersData) {
-    await prisma.user.create({ data });
+    await prisma.user.upsert({
+      where: { clerkId: data.clerkId },
+      update: {},
+      create: data
+    });
   }
 
-  const alex = await prisma.user.findUnique({ where: { clerkId: 'user_dummy1' }});
-  const sophia = await prisma.user.findUnique({ where: { clerkId: 'user_dummy2' }});
-  const marcus = await prisma.user.findUnique({ where: { clerkId: 'user_dummy3' }});
+  const alex = await prisma.user.findUnique({ where: { clerkId: 'user_dummy1' } });
+  const sophia = await prisma.user.findUnique({ where: { clerkId: 'user_dummy2' } });
+  const marcus = await prisma.user.findUnique({ where: { clerkId: 'user_dummy3' } });
 
-  console.log('Linking skills...');
-  // Alex offers React, Node, wants UI and Guitar
+  console.log('🔗 Linking skills...');
+
   if (alex) {
-    await prisma.userSkillOffered.create({ data: { userId: alex.id, skillId: react.id, yearsOfExperience: 5 }});
-    await prisma.userSkillOffered.create({ data: { userId: alex.id, skillId: node.id, yearsOfExperience: 4 }});
-    await prisma.userSkillWanted.create({ data: { userId: alex.id, skillId: ui.id }});
-    await prisma.userSkillWanted.create({ data: { userId: alex.id, skillId: guitar.id }});
+    await prisma.userSkillOffered.upsert({
+      where: { userId_skillId: { userId: alex.id, skillId: react.id } },
+      update: {},
+      create: { userId: alex.id, skillId: react.id, yearsOfExperience: 5 }
+    });
+
+    await prisma.userSkillOffered.upsert({
+      where: { userId_skillId: { userId: alex.id, skillId: node.id } },
+      update: {},
+      create: { userId: alex.id, skillId: node.id, yearsOfExperience: 4 }
+    });
+
+    await prisma.userSkillWanted.upsert({
+      where: { userId_skillId: { userId: alex.id, skillId: ui.id } },
+      update: {},
+      create: { userId: alex.id, skillId: ui.id }
+    });
+
+    await prisma.userSkillWanted.upsert({
+      where: { userId_skillId: { userId: alex.id, skillId: guitar.id } },
+      update: {},
+      create: { userId: alex.id, skillId: guitar.id }
+    });
   }
 
   if (sophia) {
-    await prisma.userSkillOffered.create({ data: { userId: sophia.id, skillId: ui.id, yearsOfExperience: 6 }});
-    await prisma.userSkillWanted.create({ data: { userId: sophia.id, skillId: react.id }});
+    await prisma.userSkillOffered.upsert({
+      where: { userId_skillId: { userId: sophia.id, skillId: ui.id } },
+      update: {},
+      create: { userId: sophia.id, skillId: ui.id, yearsOfExperience: 6 }
+    });
+
+    await prisma.userSkillWanted.upsert({
+      where: { userId_skillId: { userId: sophia.id, skillId: react.id } },
+      update: {},
+      create: { userId: sophia.id, skillId: react.id }
+    });
   }
 
   if (marcus) {
-    await prisma.userSkillOffered.create({ data: { userId: marcus.id, skillId: guitar.id, yearsOfExperience: 10 }});
-    await prisma.userSkillWanted.create({ data: { userId: marcus.id, skillId: node.id }});
+    await prisma.userSkillOffered.upsert({
+      where: { userId_skillId: { userId: marcus.id, skillId: guitar.id } },
+      update: {},
+      create: { userId: marcus.id, skillId: guitar.id, yearsOfExperience: 10 }
+    });
+
+    await prisma.userSkillWanted.upsert({
+      where: { userId_skillId: { userId: marcus.id, skillId: node.id } },
+      update: {},
+      create: { userId: marcus.id, skillId: node.id }
+    });
   }
 
-  console.log('Database seeded perfectly!');
+  console.log('✅ Database seeded successfully!');
 }
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error('❌ Seeding failed:', e);
     process.exit(1);
   })
   .finally(async () => {
