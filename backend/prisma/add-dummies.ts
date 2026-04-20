@@ -121,7 +121,7 @@ export async function seedDummyUsers() {
         await prisma.userSkillOffered.create({
           data: {
             userId: entry.user.id,
-            skillId: skillMap[skillName],
+            skillId: skillMap[skillName]!,
             yearsOfExperience: Math.floor(Math.random() * 5) + 1
           }
         });
@@ -146,7 +146,7 @@ export async function seedDummyUsers() {
         await prisma.userSkillWanted.create({
           data: {
             userId: entry.user.id,
-            skillId: skillMap[skillName]
+            skillId: skillMap[skillName]!
           }
         });
       }
